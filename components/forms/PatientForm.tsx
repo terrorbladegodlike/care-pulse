@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 // Import Components from UI
-import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
 
 // Import Components
@@ -20,6 +19,7 @@ import { UserFormValidation } from '@/lib/validation'
 
 // Import UseRouter from Next
 import { useRouter } from 'next/navigation'
+import { createUser } from '@/lib/actions/patient.actions'
 
 export enum FormFieldType {
    INPUT = 'input',
@@ -53,17 +53,16 @@ const PatientForm = () => {
       setIsLoading(true)
 
       try {
-         //  const userData = {
-         //     name,
-         //     email,
-         //     phone,
-         //  }
-         //  const user = await createUser(userData)
-         //  if(user) router.push('/patients/${user.$id}/register')
+         const userData = { name, email, phone }
+
+         const user = await createUser(userData)
+
+         if (user) router.push(`/patients/${user.$id}/register`)
       } catch (error) {
          console.log(error)
       }
    }
+
    return (
       <Form {...form}>
          <form
