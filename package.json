@@ -1,6 +1,7 @@
 {
   "name": "care-pulse",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -8,6 +9,7 @@
     "start": "next start",
     "lint": "next lint"
   },
+  
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-checkbox": "^1.1.1",
