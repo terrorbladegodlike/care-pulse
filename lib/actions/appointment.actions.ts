@@ -1,14 +1,13 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { ID } from "node-appwrite";
+import { ID, Query } from "node-appwrite";
 
 
 import {
   APPOINTMENT_COLLECTION_ID,
   DATABASE_ID,
   databases,
-  messaging,
 } from "../appwrite.config";
 import { parseStringify } from "../utils";
 
@@ -30,3 +29,19 @@ export const createAppointment = async (
     console.error("An error occurred while creating a new appointment:", error);
   }
 };
+
+//  GET RECENT APPOINTMENTS
+export const getAppointment = async (appointmentId : string) => {
+  try {
+    const appointment = await databases.getDocument(
+      DATABASE_ID!,
+      APPOINTMENT_COLLECTION_ID!,
+      appointmentId,
+    )
+
+    return parseStringify(appointment)
+  } catch (error) {
+    console.log(error);
+  }
+}
+
