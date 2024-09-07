@@ -1,30 +1,44 @@
-// Import Image & Link from Next
 import Image from 'next/image'
 import Link from 'next/link'
 
-// Import Constans
+import { Button } from '@/components/ui/button'
 import { Doctors } from '@/constants'
-
-// Import Lib
 import { getAppointment } from '@/lib/actions/appointment.actions'
 import { formatDateTime } from '@/lib/utils'
 
-// Import UI Components
-import { Button } from '@/components/ui/button'
-
-const RequestSuccess = async ({
+const Success = async ({
    searchParams,
    params: { userId },
 }: SearchParamProps) => {
    const appointmentId = (searchParams?.appointmentId as string) || ''
+
+   // Проверка, что id встречи существует
+   if (!appointmentId) {
+      return <p>Error: No appointment ID provided.</p>
+   }
+
    const appointment = await getAppointment(appointmentId)
+
+   // Проверка, что встреча была успешно загружена
+   if (!appointment) {
+      return <p>Error: Appointment not found.</p>
+   }
+
+   console.log('Appointment Data:', appointment)
 
    const doctor = Doctors.find(
       (doctor) => doctor.name === appointment.primaryPhysician
    )
 
+   // Проверка, что врач был найден
+   if (!doctor) {
+      return <p>Error: Doctor not found.</p>
+   }
+
+   console.log('Appointment ID:', appointmentId)
+
    return (
-      <div className=' flex h-screen max-h-screen px-[5%]'>
+      <div className='flex h-screen max-h-screen px-[5%]'>
          <div className='success-img'>
             <Link href='/'>
                <Image
@@ -86,4 +100,4 @@ const RequestSuccess = async ({
    )
 }
 
-export default RequestSuccess
+export default Success
