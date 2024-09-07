@@ -1,10 +1,17 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
+// Import Commponents & constants
 import { Button } from '@/components/ui/button'
 import { Doctors } from '@/constants'
+
+// Import Components from LIB
+import { getUser } from '@/lib/actions/patient.actions'
 import { getAppointment } from '@/lib/actions/appointment.actions'
 import { formatDateTime } from '@/lib/utils'
+
+// Import Sentry
+import * as Sentry from '@sentry/nextjs'
 
 const Success = async ({
    searchParams,
@@ -34,6 +41,10 @@ const Success = async ({
    if (!doctor) {
       return <p>Error: Doctor not found.</p>
    }
+
+   const user = await getUser(userId)
+
+   Sentry.metrics.set('user_view_appointment-success', user.name)
 
    console.log('Appointment ID:', appointmentId)
 
